@@ -9,10 +9,12 @@ frontend:
   phases:
     build:
       commands:
+        - touch .env.production
         - env | grep -e NEXT_PUBLIC_ >> .env.production
         - env | grep -e FIREBASE_ >> .env.production
         - env | grep -e SENDGRID_API_KEY >> .env.production
         - env | grep -e BOLDSIGN_API_KEY >> .env.production
+        - npm ci
         - npm run build
   artifacts:
     baseDirectory: .next
