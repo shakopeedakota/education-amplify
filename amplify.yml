@@ -9,7 +9,6 @@ frontend:
   phases:
     build:
       commands:
-        - env | grep -e API_BASE_URL >> .env.production
         - env | grep -e NEXT_PUBLIC_ >> .env.production
         - env | grep -e FIREBASE_ >> .env.production
         - env | grep -e SENDGRID_API_KEY >> .env.production
