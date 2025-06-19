@@ -69,16 +69,6 @@ export function getFirebaseErrorMessage(err: FirebaseError) {
   }
 }
 
-export function parseFormData(formData: FormData) {
-  const tempObj = {} as {[key: string]: string | FormDataEntryValue};
-
-  for (const pair of formData.entries()) {
-    tempObj[pair[0]] = pair[1];
-  }
-
-  return tempObj;
-}
-
 export function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
   return obj[key];
 }
