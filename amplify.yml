@@ -5,21 +5,35 @@ backend:
       commands:
         - npm ci --cache .npm --prefer-offline
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+
 frontend:
   phases:
     build:
       commands:
+        # Ensure the .env.production file exists first
         - touch .env.production
-        # - env | grep -e NEXT_PUBLIC_ >> .env.production
+
+        # Output variables for debugging (optional but recommended)
+        - echo "Injecting NEXT_PUBLIC_ env vars:"
+        - env | grep -e NEXT_PUBLIC_
+
+        # Append matched env vars to .env.production
+        - env | grep -e NEXT_PUBLIC_ >> .env.production
         - env | grep -e FIREBASE_ >> .env.production
         - env | grep -e SENDGRID_API_KEY >> .env.production
         - env | grep -e BOLDSIGN_API_KEY >> .env.production
+
+        # Install dependencies
         - npm ci
+
+        # Run build
         - npm run build
+
   artifacts:
     baseDirectory: .next
     files:
       - '**/*'
+
   cache:
     paths:
       - .next/cache/**/*
