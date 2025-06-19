@@ -14,14 +14,14 @@ frontend:
         - touch .env.production
 
         # Output variables for debugging (optional but recommended)
-        - echo "Injecting NEXT_PUBLIC_ env vars:"
-        - env | grep -e NEXT_PUBLIC_
+        # - echo "Injecting NEXT_PUBLIC_ env vars:"
+        # - env | grep -e NEXT_PUBLIC_
 
-        # Append matched env vars to .env.production
-        - env | grep -e NEXT_PUBLIC_ >> .env.production
-        - env | grep -e FIREBASE_ >> .env.production
-        - env | grep -e SENDGRID_API_KEY >> .env.production
-        - env | grep -e BOLDSIGN_API_KEY >> .env.production
+        # # Append matched env vars to .env.production
+        # - env | grep -e NEXT_PUBLIC_ >> .env.production
+        # - env | grep -e FIREBASE_ >> .env.production
+        # - env | grep -e SENDGRID_API_KEY >> .env.production
+        # - env | grep -e BOLDSIGN_API_KEY >> .env.production
 
         # Install dependencies
         - npm ci
