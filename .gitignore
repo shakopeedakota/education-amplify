@@ -46,3 +46,5 @@ amplifyconfiguration*
 
 # public files
 public/tmp/*
+# Sentry Config File
+.env.sentry-build-plugin
