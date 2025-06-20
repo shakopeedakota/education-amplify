@@ -6,23 +6,21 @@ import { StudentSupportTeacherConsentPDF } from "./StudentSupportTeacherConsentP
 import { MedicationAdministrationAuthorizationPDF } from "./MedicationAdministrationAuthorizationPDF";
 import { PostSecondaryServicesPDF } from "./PostSecondaryServicesPDF";
 
-export const FullAppPDF = ({ appData }: { appData: any }) => {
-  return (
-    <Document title="2025/26 SMSC Education Application">
-      <PrimaryApplicationPDF appData={appData} />
-      {appData.children.map((child: any, index: number) => (
-        <ReleaseOfInformationPDF key={index} index={index} appData={appData} childData={child} />
-      ))}
-      <AfterSchoolProgramPDF appData={appData} />
-      {appData.children.map((child: any, index: number) => (
-        <StudentSupportTeacherConsentPDF key={index} index={index} appData={appData} childData={child} />
-      ))}
-      {appData.children.map((child: any, index: number) => (
-        <MedicationAdministrationAuthorizationPDF key={index} index={index} appData={appData} childData={child} />
-      ))}
-      {appData.postSecondary.filter((a: any) => a.afterHighSchoolPrep != null && a.afterHighSchoolPrep != '').map((child: any, index: number) => (
-        <PostSecondaryServicesPDF key={index} index={index} appData={appData} childData={appData.children?.[index]} />
-      ))}
-    </Document>
-  );
-}
+export const FullAppPDF = ({ appData }: { appData: any }) => (
+  <Document title="2025/26 SMSC Education Application">
+    <PrimaryApplicationPDF appData={appData} />
+    {appData.children?.map((child: any, index: number) => (
+      <ReleaseOfInformationPDF key={index} index={index} appData={appData} childData={child} />
+    ))}
+    <AfterSchoolProgramPDF appData={appData} />
+    {appData.children?.map((child: any, index: number) => (
+      <StudentSupportTeacherConsentPDF key={index} index={index} appData={appData} childData={child} />
+    ))}
+    {appData.children?.map((child: any, index: number) => (
+      <MedicationAdministrationAuthorizationPDF key={index} index={index} appData={appData} childData={child} />
+    ))}
+    {appData.postSecondary?.filter((a: any) => a.afterHighSchoolPrep != null && a.afterHighSchoolPrep != '').map((child: any, index: number) => (
+      <PostSecondaryServicesPDF key={index} index={index} appData={appData} childData={appData.children?.[index]} />
+    ))}
+  </Document>
+);

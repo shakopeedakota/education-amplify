@@ -20,4 +20,12 @@ export interface Application {
     prescriptionMedicationNotice: string;
     informedConsent: string;
   };
+  postSecondary: {
+    [index: number]: {
+      afterHighSchoolPrep: string | undefined | null;
+      meetingFamilyNeeds?: string;
+      futureChildSupport?: string;
+      additionalInfo?: string;
+    }
+  }
 }
