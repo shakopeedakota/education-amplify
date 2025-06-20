@@ -177,7 +177,7 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   ];
 
   // Path to the document that needs to be signed
-  const files = fs.createReadStream(`public/tmp/${filename}`);
+  const files = fs.createReadStream(`/tmp/${filename}`);
 
   // Create the document details for sending.
   const sendForSign = new SendForSign();
