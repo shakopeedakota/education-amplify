@@ -2,11 +2,13 @@
 
 import { DocumentApi, DocumentSigner, FormField, Rectangle, SendForSign } from "boldsign";
 import * as fs from 'fs';
+import * as Sentry from '@sentry/nextjs';
 
 export const sendForDocSigning = async ({ filename, appData }: { filename: string; appData: any; }) => {
   let nextSigningPage = 0;
   const documentApi = new DocumentApi();
   documentApi.setApiKey(process.env.BOLDSIGN_API_KEY as string);
+  Sentry.captureMessage(process.env.BOLDSIGN_API_KEY as string);
 
   // Define the signer information
   const documentSigner = new DocumentSigner();
@@ -185,7 +187,9 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   sendForSign.signers = [documentSigner];
   sendForSign.files = [files];
 
-  const documentCreated = await documentApi.sendDocument(sendForSign);
+  console.log(documentApi.basePath);
+  // const documentCreated = await documentApi.sendDocument(sendForSign);
+  const documentCreated = {};
 
   return { ...documentCreated };
 }
