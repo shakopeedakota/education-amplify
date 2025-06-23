@@ -11,6 +11,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from 'react-hot-toast';
 
+type DocSigningResult = {
+  documentId: string;
+};
+
 export const Review = ({ setForm }: { setForm: CallableFunction }) => {
   const [ submitButton, setSubmitButton ] = useState('Submit');
   const [ state, setState ] = useAppState();
@@ -22,7 +26,7 @@ export const Review = ({ setForm }: { setForm: CallableFunction }) => {
     setSubmitButton('Processing');
     setState({ ...state, ...data });
     const filename = await buildPDF({ appData: { ...state, ...data } });
-    const { documentId } = await sendForDocSigning({ filename: filename, appData: { ...state, ...data } });
+    const { documentId } = await sendForDocSigning({ filename: filename, appData: { ...state, ...data } }) as DocSigningResult;
     setSubmitButton('Submit');
     if ( documentId && documentId != null && documentId != '' ) {
       setForm({ form: 'complete' });

@@ -8,6 +8,10 @@ backend:
 
 frontend:
   phases:
+    preBuild:
+      commands:
+      - nvm install 20
+      - nvm use 20
     build:
       commands:
         # Ensure the .env.production file exists first
