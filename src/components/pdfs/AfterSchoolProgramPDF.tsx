@@ -201,7 +201,7 @@ export const AfterSchoolProgramPDF = ({ appData }: { appData: any; }) => (
             <PDFLabel>My child (or children) are authorized to drive their own vehicle and can leave for the day on their own. Please name all that apply.</PDFLabel>
             <PDFTextarea
               lines={2}
-              value={appData.afterSchoolPickup?.studentDrivers?.length > 0 ? appData.afterSchoolPickup?.studentDrivers.join(", ") : ''}
+              value={appData.afterSchoolPickup?.studentDrivers?.filter((a: any) => a).join(", ")}
             />
           </View>
         </View>
@@ -212,7 +212,7 @@ export const AfterSchoolProgramPDF = ({ appData }: { appData: any; }) => (
             <PDFLabel>My child can leave with another SMSC child who drives their own vehicle. If yes, please ensure that person is named as an Authorized Person above.</PDFLabel>
             <PDFTextarea
               lines={2}
-              value={appData.afterSchoolPickup?.leaveWithAnotherStudent?.length > 0 ? appData.afterSchoolPickup?.leaveWithAnotherStudent.join(", ") : ''}
+              value={appData.afterSchoolPickup?.leaveWithAnotherStudent?.filter((a: any) => a).join(", ")}
             />
           </View>
         </View>

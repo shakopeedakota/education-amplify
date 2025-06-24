@@ -2,13 +2,11 @@
 
 import { DocumentApi, DocumentSigner, FormField, Rectangle, SendForSign } from "boldsign";
 import * as fs from 'fs';
-import * as Sentry from '@sentry/nextjs';
 
 export const sendForDocSigning = async ({ filename, appData }: { filename: string; appData: any; }) => {
   let nextSigningPage = 0;
   const documentApi = new DocumentApi();
   documentApi.setApiKey(process.env.BOLDSIGN_API_KEY as string);
-  Sentry.captureMessage(process.env.BOLDSIGN_API_KEY as string);
 
   // Define the signer information
   const documentSigner = new DocumentSigner();
@@ -19,7 +17,7 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   const signatureX = 120;
   const signatureWidth = 380;
   const signatureHeight = 30;
-  const dateSignedX = 565;
+  const dateSignedX = 585.6;
   const dateSignedWidth = 200;
   const dateSignedHeight = 30;
 
@@ -38,7 +36,7 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
 
   const roiDateSignedBounds = new Rectangle();
   roiDateSignedBounds.x = dateSignedX;
-  roiDateSignedBounds.y = 560;
+  roiDateSignedBounds.y = 556;
   roiDateSignedBounds.width = dateSignedWidth;
   roiDateSignedBounds.height = dateSignedHeight;
 
@@ -58,6 +56,8 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
     tempDateSignedField.bounds = roiDateSignedBounds;
     tempDateSignedField.pageNumber = nextSigningPage;
     tempDateSignedField.isRequired = true;
+    tempDateSignedField.font = FormField.FontEnum.Courier;
+    tempDateSignedField.fontSize = 16
 
     roiSignatureFields.push(tempSignatureField, tempDateSignedField);
   }
@@ -74,7 +74,7 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
 
   const afterSchoolProgramDateSignedBounds = new Rectangle();
   afterSchoolProgramDateSignedBounds.x = dateSignedX;
-  afterSchoolProgramDateSignedBounds.y = 540;
+  afterSchoolProgramDateSignedBounds.y = 530;
   afterSchoolProgramDateSignedBounds.width = dateSignedWidth;
   afterSchoolProgramDateSignedBounds.height = dateSignedHeight;
 
@@ -91,6 +91,8 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   afterSchoolProgramDateSignedField.bounds = afterSchoolProgramDateSignedBounds;
   afterSchoolProgramDateSignedField.pageNumber = nextSigningPage;
   afterSchoolProgramDateSignedField.isRequired = true;
+  afterSchoolProgramDateSignedField.font = FormField.FontEnum.Courier;
+  afterSchoolProgramDateSignedField.fontSize = 16;
 
   // Student Support Teacher Consent - Signature needed
   const sstFields = [];
@@ -98,13 +100,13 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
 
   const sstSignatureBounds = new Rectangle();
   sstSignatureBounds.x = signatureX;
-  sstSignatureBounds.y = 450;
+  sstSignatureBounds.y = 530;
   sstSignatureBounds.width = signatureWidth;
   sstSignatureBounds.height = signatureHeight;
 
   const sstDateSignedBounds = new Rectangle();
   sstDateSignedBounds.x = dateSignedX;
-  sstDateSignedBounds.y = 450;
+  sstDateSignedBounds.y = 540;
   sstDateSignedBounds.width = dateSignedWidth;
   sstDateSignedBounds.height = dateSignedHeight;
   
@@ -124,6 +126,8 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
     tempDateSignedField.bounds = sstDateSignedBounds;
     tempDateSignedField.pageNumber = nextSigningPage;
     tempDateSignedField.isRequired = true;
+    tempDateSignedField.font = FormField.FontEnum.Courier;
+    tempDateSignedField.font = 16;
 
     sstFields.push(tempSignatureField, tempDateSignedField);
   }
@@ -139,7 +143,7 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
 
   const medicationDateSignedBounds = new Rectangle();
   medicationDateSignedBounds.x = dateSignedX;
-  medicationDateSignedBounds.y = 984;
+  medicationDateSignedBounds.y = 990;
   medicationDateSignedBounds.width = dateSignedWidth;
   medicationDateSignedBounds.height = dateSignedHeight;
 
@@ -159,6 +163,8 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
     tempDateSignedField.bounds = medicationDateSignedBounds;
     tempDateSignedField.pageNumber = nextSigningPage;
     tempDateSignedField.isRequired = true;
+    tempDateSignedField.font = FormField.FontEnum.Courier;
+    tempDateSignedField.fontSize = 16
 
     medicationAuthorizationFields.push(tempSignatureField, tempDateSignedField);
   }
@@ -179,7 +185,7 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   ];
 
   // Path to the document that needs to be signed
-  const files = fs.createReadStream(`/tmp/${filename}`);
+  const files = fs.createReadStream(`${process.env.TMP_FOLDER}${filename}`);
 
   // Create the document details for sending.
   const sendForSign = new SendForSign();
@@ -187,9 +193,7 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   sendForSign.signers = [documentSigner];
   sendForSign.files = [files];
 
-  console.log(documentApi.basePath);
-  // const documentCreated = await documentApi.sendDocument(sendForSign);
-  const documentCreated = {};
+  const documentCreated = await documentApi.sendDocument(sendForSign);
 
   return { ...documentCreated };
 }

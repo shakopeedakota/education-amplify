@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/lib/AuthContext";
 import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
@@ -20,10 +19,8 @@ export default function RootLayout({
         <script src="https://kit.fontawesome.com/2cc0989af0.js" crossOrigin="anonymous" async={true}></script>
       </head>
       <body className="antialiased flex flex-col">
-        <AuthProvider>
-          <Toaster position="bottom-center" />
-          {children}
-        </AuthProvider>
+        <Toaster position="bottom-center" />
+        {children}
       </body>
     </html>
   );

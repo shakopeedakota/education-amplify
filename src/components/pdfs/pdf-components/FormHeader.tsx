@@ -7,7 +7,7 @@ export const FormHeader = ({ title, subtitle }: { title: string; subtitle?: stri
     <View fixed>
       <View style={{ ...styles.row, alignItems: 'flex-end' }}>
         <View style={{ ...styles.col, ...styles.col4 }}>
-          <Image src="https://smsc-prod-media-storage.s3.us-east-1.amazonaws.com/smsc_education_dept_logo_f41863a366.png" />
+          <Image src="public/smsc-education-dept-logo.png" />
         </View>
         <View style={{ ...styles.col, ...styles.col8, ...styles.formTitle }}>
           <Text style={styles.formTitle}>{title}</Text>
