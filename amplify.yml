@@ -3,28 +3,17 @@ backend:
   phases:
     build:
       commands:
-        # Use --include=optional to ensure optional deps like @parcel/watcher are installed
-        - npm ci --include=optional --cache .npm --prefer-offline
+        - npm ci --cache .npm --prefer-offline
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
-
 frontend:
   phases:
     build:
       commands:
-        # Install required build tools for native module fallback
-        - yum install -y gcc gcc-c++ make python3
-
-        # Ensure optional deps like @parcel/watcher get installed
-        - npm ci --include=optional
-
-        # Build your app
         - npm run build
-
   artifacts:
     baseDirectory: .next
     files:
       - '**/*'
-
   cache:
     paths:
       - .next/cache/**/*
