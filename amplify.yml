@@ -8,11 +8,11 @@ backend:
 
 frontend:
   phases:
-    preBuild:
-      commands:
-        - npm ci
     build:
       commands:
+        # Run clean
+        - npm ci
+      
         # Run build
         - npm run build
 
