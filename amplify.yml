@@ -11,10 +11,13 @@ frontend:
   phases:
     build:
       commands:
-        # Use --include=optional to ensure optional deps
+        # Install required build tools for native module fallback
+        - yum install -y gcc gcc-c++ make python3
+
+        # Ensure optional deps like @parcel/watcher get installed
         - npm ci --include=optional
 
-        # Run build
+        # Build your app
         - npm run build
 
   artifacts:
