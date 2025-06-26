@@ -2,7 +2,6 @@
 
 import { Button, Form } from "@/components/ui/Forms";
 import { sendForDocSigning } from "@/data/actions/docsign-actions";
-import { buildPDF } from "@/data/actions/pdf-actions";
 import { useAppState } from "@/lib/formState";
 import { Application } from "@/models/Application";
 import { Contact } from "@/models/Contact";
@@ -21,7 +20,6 @@ export const Review = ({ setForm }: { setForm: CallableFunction }) => {
   const saveData = async (data: any) => {
     setSubmitButton('Processing');
     setState({ ...state, ...data });
-    // const filename = await buildPDF({ appData: { ...state, ...data } });
     await fetch('https://q5ogk6qbf3sp62443ceo43zcp40kdcvp.lambda-url.us-east-1.on.aws/', {
       method: 'POST',
       headers: {
