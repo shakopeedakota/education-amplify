@@ -21,14 +21,24 @@ export const Review = ({ setForm }: { setForm: CallableFunction }) => {
   const saveData = async (data: any) => {
     setSubmitButton('Processing');
     setState({ ...state, ...data });
-    const filename = await buildPDF({ appData: { ...state, ...data } });
-    const { documentId } = await sendForDocSigning({ filename: filename, appData: { ...state, ...data } });
+    // const filename = await buildPDF({ appData: { ...state, ...data } });
+    await fetch('https://q5ogk6qbf3sp62443ceo43zcp40kdcvp.lambda-url.us-east-1.on.aws/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ body: {...state, ...data} })
+    })
+    .then(resp => resp.json())
+    .then(async (data) => {
+      const { documentId } = await sendForDocSigning({ filename: data.url, appData: { ...state, ...data } });
+      if ( documentId && documentId != null && documentId != '' ) {
+        setForm({ form: 'complete' });
+      } else {
+        toast.error('Something went wrong. Please try again.');
+      }
+    });
     setSubmitButton('Submit');
-    if ( documentId && documentId != null && documentId != '' ) {
-      setForm({ form: 'complete' });
-    } else {
-      toast.error('Something went wrong. Please try again.');
-    }
   }
 
   return (
