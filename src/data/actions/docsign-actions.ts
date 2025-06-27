@@ -14,6 +14,7 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   documentSigner.name = `${appData.primaryContact?.firstName} ${appData.primaryContact?.lastName}`;
   documentSigner.emailAddress = appData.primaryContact?.email
   documentSigner.signerType = DocumentSigner.SignerTypeEnum.Signer;
+  documentSigner.signerOrder = 1;
 
   const signatureX = 120;
   const signatureWidth = 380;
