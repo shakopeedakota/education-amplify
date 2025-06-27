@@ -6,8 +6,8 @@ import { DocumentApi, DocumentSigner, FormField, Rectangle, SendForSign } from "
 export const sendForDocSigning = async ({ filename, appData }: { filename: string; appData: any; }) => {
   let nextSigningPage = 0;
   const documentApi = new DocumentApi();
-  documentApi.setApiKey(process.env.BOLDSIGN_API_KEY as string);
-  console.log(process.env.BOLDSIGN_API_KEY);
+  documentApi.setApiKey(process.env.NEXT_PUBLIC_BOLDSIGN_API_KEY as string);
+  console.log(process.env.NEXT_PUBLIC_BOLDSIGN_API_KEY);
 
   // Define the signer information
   const documentSigner = new DocumentSigner();
@@ -195,8 +195,6 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   sendForSign.signers = [documentSigner];
   // sendForSign.files = [files];
   sendForSign.fileUrls = [filename];
-
-  console.log(documentApi.basePath);
 
   const documentCreated = await documentApi.sendDocument(sendForSign);
 
