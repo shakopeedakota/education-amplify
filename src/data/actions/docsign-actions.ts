@@ -7,6 +7,7 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   let nextSigningPage = 0;
   const documentApi = new DocumentApi();
   documentApi.setApiKey(process.env.BOLDSIGN_API_KEY as string);
+  console.log(process.env.BOLDSIGN_API_KEY);
 
   // Define the signer information
   const documentSigner = new DocumentSigner();
@@ -194,6 +195,8 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   sendForSign.signers = [documentSigner];
   // sendForSign.files = [files];
   sendForSign.fileUrls = [filename];
+
+  console.log(documentApi.basePath);
 
   const documentCreated = await documentApi.sendDocument(sendForSign);
 
