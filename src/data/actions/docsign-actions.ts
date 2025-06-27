@@ -1,7 +1,7 @@
 'use server';
 
 import { DocumentApi, DocumentSigner, FormField, Rectangle, SendForSign } from "boldsign";
-import * as fs from 'fs';
+// import * as fs from 'fs';
 
 export const sendForDocSigning = async ({ filename, appData }: { filename: string; appData: any; }) => {
   let nextSigningPage = 0;
@@ -185,13 +185,15 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   ];
 
   // Path to the document that needs to be signed
-  const files = fs.createReadStream(filename);
+  // No longer need to read from filesystem
+  // const files = fs.createReadStream(filename);
 
   // Create the document details for sending.
   const sendForSign = new SendForSign();
   sendForSign.title = "2025/26 SMSC Education Department Enrollment Application";
   sendForSign.signers = [documentSigner];
-  sendForSign.files = [files];
+  // sendForSign.files = [files];
+  sendForSign.fileUrls = [filename];
 
   const documentCreated = await documentApi.sendDocument(sendForSign);
 
