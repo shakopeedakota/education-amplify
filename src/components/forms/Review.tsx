@@ -25,7 +25,7 @@ export const Review = ({ setForm }: { setForm: CallableFunction }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ body: {...state, ...data} })
+      body: JSON.stringify({ ...state, ...data })
     })
     .then(resp => resp.json())
     .then(async (data) => {

@@ -7,12 +7,11 @@ export const sendForDocSigning = async ({ filename, appData }: { filename: strin
   let nextSigningPage = 0;
   const documentApi = new DocumentApi();
   documentApi.setApiKey(process.env.NEXT_PUBLIC_BOLDSIGN_API_KEY as string);
-  console.log(process.env.NEXT_PUBLIC_BOLDSIGN_API_KEY);
 
   // Define the signer information
   const documentSigner = new DocumentSigner();
   documentSigner.name = `${appData.primaryContact?.firstName} ${appData.primaryContact?.lastName}`;
-  documentSigner.emailAddress = appData.primaryContact?.email
+  documentSigner.emailAddress = appData.primaryContact?.email;
   documentSigner.signerType = DocumentSigner.SignerTypeEnum.Signer;
   documentSigner.signerOrder = 1;
 
