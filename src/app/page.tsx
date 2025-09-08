@@ -7,7 +7,7 @@ export default function Home() {
         <h1>Welcome to the Education Portal</h1>
       </div>
       <div className="flex items-center justify-center gap-4 mt-8">
-        <a href="/application" className="btn btn-thin btn-primary">Start New Application</a>
+        <a href="/application" className="btn btn-thin btn-primary">Start New Form</a>
       </div>
     </div>
   );

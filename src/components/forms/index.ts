@@ -1,6 +1,4 @@
 export { Introduction } from './Introduction';
-export { PrimaryContact } from './PrimaryContact';
-export { SecondaryContact } from './SecondaryContact';
 export { EmergencyContacts, EmergencyContactForm } from './EmergencyContacts';
 export { Children, ChildForm } from './Children';
 export { ReleaseOfInformation } from './ReleaseOfInformation';

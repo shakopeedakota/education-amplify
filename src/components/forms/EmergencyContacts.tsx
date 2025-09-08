@@ -155,6 +155,14 @@ export const EmergencyContactForm = ({ update, index, value, setEditIndex }: {
         </Field>
       </div>
       <div className="form-row">
+        <Field label="Relation">
+          <Input
+            type="text"
+            required
+          />
+        </Field>
+      </div>
+      <div className="form-row">
         <Button
           className="ml-auto btn btn-thin btn-primary"
           onClick={handleSubmit((data) => {

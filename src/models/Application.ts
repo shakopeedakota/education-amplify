@@ -5,6 +5,7 @@ export interface Application {
   id?: number | null;
   createdAt?: Date | null;
   updatedAt?: Date | null;
+  contactInformation: Record<any, any>;
   primaryContact: Contact | null;
   secondaryContact: Contact | null;
   emergencyContacts: Record<any, any>[];

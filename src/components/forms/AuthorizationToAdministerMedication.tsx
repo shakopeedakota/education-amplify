@@ -124,16 +124,6 @@ const AuthorizationToAdministerMedicationForm = ({ childId, register, errors, se
               value={true}
             />
             <Checkbox
-              {...register(`${fieldArrayName}.medicationList.${childId}.aspirin`)}
-              label="Aspirin: Up to 2 pills, regular strength"
-              value={true}
-            />
-            <Checkbox
-              {...register(`${fieldArrayName}.medicationList.${childId}.alleve`)}
-              label="Alleve (Naproxen Sodium): Up to 2 pills, regular strength"
-              value={true}
-            />
-            <Checkbox
               {...register(`${fieldArrayName}.medicationList.${childId}.bacitracin`)}
               label="Bacitracin or other topical ointment for cuts and pain relief: Dose as listed on the medication"
               value={true}

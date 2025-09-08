@@ -14,7 +14,7 @@ export const Introduction = ({ setForm }: { setForm: CallableFunction }) => {
   const saveData = (data: any) => {
     setState({ ...state, ...data });
     setForm({
-      form: 'primaryContact'
+      form: 'contactInformation',
     });
   }
   
@@ -24,7 +24,7 @@ export const Introduction = ({ setForm }: { setForm: CallableFunction }) => {
         <div className="form-section">
           <div className="form-subsection shadow">
             <h1>Welcome!</h1>
-            <p>The purpose of this form is to expedite the application process for Education services and to reduce the amount of duplicate fields needed to fill out.</p>
+            <p>The purpose of this form is to expedite the intake process for Education services and to reduce the amount of duplicate fields needed to fill out.</p>
           </div>
           <div className="form-row">
             <Button className="ml-auto btn-primary">Next<span className="rightArrow"></span></Button>

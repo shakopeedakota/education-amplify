@@ -1,7 +1,5 @@
 import {
   Introduction,
-  PrimaryContact,
-  SecondaryContact,
   EmergencyContacts,
   Children,
   ReleaseOfInformation,
@@ -13,13 +11,13 @@ import {
   AuthorizationToAdministerMedication,
 } from "@/components/forms";
 import { useState } from "react";
+import { ContactInformation } from "./ContactInformation";
 
 export const ApplicationContainer = () => {
   const [ currentForm, setCurrentForm ] = useState({form: 'introduction'});
   const formList: {[index: string]: any} = {
     introduction: <Introduction setForm={setCurrentForm} />,
-    primaryContact: <PrimaryContact setForm={setCurrentForm} />,
-    secondaryContact: <SecondaryContact setForm={setCurrentForm} />,
+    contactInformation: <ContactInformation setForm={setCurrentForm} />,
     emergencyContacts: <EmergencyContacts setForm={setCurrentForm} />,
     children: <Children setForm={setCurrentForm} />,
     roi: <ReleaseOfInformation setForm={setCurrentForm} />,

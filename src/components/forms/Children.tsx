@@ -2,7 +2,7 @@
 
 import { useAppState } from "@/lib/formState";
 import { useFieldArray, useForm } from "react-hook-form";
-import { Form, Button, Field, Input, Textbox } from '@/components/ui/Forms';
+import { Form, Button, Field, Input } from '@/components/ui/Forms';
 import { AlertCircle, Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import { useState } from "react";
 import { STATES_LIST } from "@/lib/utils";
@@ -145,7 +145,7 @@ export const ChildForm = ({ update, index, value, setEditIndex }: {
           />
         </Field>
       </div>
-      <div className="form-row">
+      {/* <div className="form-row">
         <Field label="Email" error={errors?.email} className="w-2/3">
           <Input
             {...register(`email`)}
@@ -153,16 +153,16 @@ export const ChildForm = ({ update, index, value, setEditIndex }: {
             type="email"
           />
         </Field>
-        <Field label="Phone" error={errors?.phone} className="w-1/3">
+        <Field label="Child's Phone" error={errors?.phone} className="w-1/3">
           <Input
             {...register(`phone`)}
             id="phone"
             type="tel"
           />
         </Field>
-      </div>
+      </div> */}
       <div className="form-row">
-        <Field label="Current School" error={errors?.currentSchool} className="w-4/5">
+        <Field label="Current School" error={errors?.currentSchool} className="">
           <Input
             {...register(`currentSchool`, { required: 'Current school is required' })}
             id="currentSchool"
@@ -170,7 +170,9 @@ export const ChildForm = ({ update, index, value, setEditIndex }: {
             required
           />
         </Field>
-        <Field label="Grade" error={errors?.grade} className="w-1/5">
+      </div>
+      <div className="form-row">
+        <Field label="Current/Rising Grade" error={errors?.grade} className="w-3/5">
           <Input
             {...register(`grade`, { required: 'Grade level is required' })}
             id="grade"
@@ -218,19 +220,6 @@ export const ChildForm = ({ update, index, value, setEditIndex }: {
             id="zip"
             type="text"
             required
-          />
-        </Field>
-      </div>
-      <div className="form-row">
-        <div className="form-control">
-          <label className="font-bold">Other Information</label>
-          <p>Please list any additional information the Education Department should know about your child.</p>
-        </div>
-      </div>
-      <div className="form-row">
-        <Field>
-          <Textbox
-            {...register(`otherInformation`)}
           />
         </Field>
       </div>
