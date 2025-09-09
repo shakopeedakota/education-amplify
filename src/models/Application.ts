@@ -1,15 +1,10 @@
-import { Child } from "./Child";
-import { Contact } from "./Contact";
-
 export interface Application {
   id?: number | null;
   createdAt?: Date | null;
   updatedAt?: Date | null;
   contactInformation: Record<any, any>;
-  primaryContact: Contact | null;
-  secondaryContact: Contact | null;
   emergencyContacts: Record<any, any>[];
-  children: Record<any, Child>[];
+  children: Record<any, any>[];
   afterSchoolPickup: {
     pickupLateNotice: any;
     authorizedDrivers: Record<any, any>[];

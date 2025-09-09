@@ -6,10 +6,12 @@ import { Form, Button, Field, Input } from '@/components/ui/Forms';
 import { PlusCircle, Pencil, Trash2, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { Application } from '@/models/Application';
+import { EmergencyContactModal } from '../custom/EmergencyContactModal';
 
 const fieldArrayName = "emergencyContacts";
 
 export const EmergencyContacts = ({ setForm }: { setForm: CallableFunction }) => {
+  const [ showModal, setShowModal ] = useState(false);
   const [ state, setState ] = useAppState();
   const [ editIndex, setEditIndex ] = useState(-1);
   const {
@@ -29,82 +31,85 @@ export const EmergencyContacts = ({ setForm }: { setForm: CallableFunction }) =>
   });
 
   const saveData = (data: any) => {
-    const nextOverride = state.nextOverride && state.nextOverride != '' ? state.nextOverride : '';
-    delete state.nextOverride;
     setState({ ...state, ...data });
-    setForm({ form: nextOverride != '' ? nextOverride : 'children' });
+    setForm({ form: 'children' });
   };
 
   return (
-    <Form onSubmit={handleSubmit(saveData)}>
-      <fieldset>
-        <div className="form-section">
-          <div className="form-subsection shadow">
-            <div className="form-row">
-              <div className="form-control">
-                <h2>Emergency Contacts</h2>
-                <p>These individuals will be contacted in the event the primary or secondary contacts are unavailable.</p>
-              </div>
-            </div>
-          </div>
-          {errors?.[fieldArrayName]?.root && (
-            <div className="form-row">
-              <div className="form-control"><small className="error flex gap-1 mt-1 items-center"><AlertCircle size="15px" />{errors?.[fieldArrayName]?.root?.message}</small></div>
-            </div>
-          )}
-          {fields.map((field: any, index: number) => (
-            <div key={field.id} className="form-subsection shadow">
-              <div className="form-subsection-header flex gap-2">
-                <span className="mr-auto">{field.firstName ?? 'Emergency'} {field.lastName ?? `Contact #${index + 1}`}</span>
-                <button type="button" className="inline-block btn-link" onClick={() => setEditIndex(index)}>
-                  <Pencil size="16" />
-                </button>
-                <button onClick={() => remove(index)}>
-                  <Trash2 size="16" color="red" />
-                </button>
-              </div>
-              {editIndex == index && (
-                <div className="form-subsection-body">
-                  <EmergencyContactForm
-                    update={update}
-                    index={index}
-                    value={field}
-                    setEditIndex={setEditIndex}
-                  />
+    <>
+      <Form onSubmit={handleSubmit(saveData)}>
+        <fieldset>
+          <div className="form-section">
+            <div className="form-subsection shadow">
+              <div className="form-row">
+                <div className="form-control">
+                  <h2>Emergency Contacts</h2>
+                  <p>These individuals will be contacted in the event the primary or secondary contacts are unavailable.</p>
                 </div>
-              )}
-            </div>
-          ))}
-          {fields.length < 2 &&
-            <div className="form-row">
-              <div className="form-control text-center">
-                <Button
-                  type="button"
-                  onClick={() => {
-                    append({
-                      firstName: '',
-                      lastName: '',
-                      email: '',
-                      phone: '',
-                    });
-                    setEditIndex(fields.length);
-                  }}
-                >
-                  <span className="flex items-center">
-                    <PlusCircle size="12px" className="mr-4" />
-                    Add Emergency Contact
-                  </span>
-                </Button>
               </div>
             </div>
-          }
-          <div className="form-row">
-            <Button type="button" onClick={() => setForm({ form: 'secondaryContact' })} className="btn btn-thin btn-link"><span className="leftArrow"></span>Prev</Button>
-            <Button className="ml-auto btn-primary btn-thin" disabled={!isValid || fields?.length < 1}>Next<span className="rightArrow"></span></Button>
+            {errors?.[fieldArrayName]?.root && (
+              <div className="form-row">
+                <div className="form-control"><small className="error flex gap-1 mt-1 items-center"><AlertCircle size="15px" />{errors?.[fieldArrayName]?.root?.message}</small></div>
+              </div>
+            )}
+            {fields.map((field: any, index: number) => (
+              <div key={field.id} className="form-subsection shadow">
+                <div className="form-subsection-header flex gap-2">
+                  <span className="mr-auto">{field.firstName ?? 'Emergency'} {field.lastName ?? `Contact #${index + 1}`}</span>
+                  <button type="button" className="inline-block btn-link" onClick={() => setEditIndex(index)}>
+                    <Pencil size="16" />
+                  </button>
+                  <button onClick={() => remove(index)}>
+                    <Trash2 size="16" color="red" />
+                  </button>
+                </div>
+                {editIndex == index && (
+                  <div className="form-subsection-body">
+                    <EmergencyContactForm
+                      update={update}
+                      index={index}
+                      value={field}
+                      setEditIndex={setEditIndex}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+            {fields.length < 2 &&
+              <div className="form-row">
+                <div className="form-control text-center">
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setShowModal(true);
+                    }}
+                  >
+                    <span className="flex items-center">
+                      <PlusCircle size="12px" className="mr-4" />
+                      Add Emergency Contact
+                    </span>
+                  </Button>
+                </div>
+              </div>
+            }
+            <div className="form-row">
+              <Button type="button" onClick={() => setForm({ form: 'secondaryContact' })} className="btn btn-thin btn-link"><span className="leftArrow"></span>Prev</Button>
+              <Button className="ml-auto btn-primary btn-thin" disabled={!isValid || fields?.length < 1}>Next<span className="rightArrow"></span></Button>
+            </div>
           </div>
-        </div>
-      </fieldset>
-    </Form>
+        </fieldset>
+      </Form>
+      {showModal && (
+        <EmergencyContactModal
+          onClose={() => setShowModal(false)}
+          onSave={(contact) => {
+            append(contact);
+            setShowModal(false);
+          }}
+        />
+      )}
+    </>
   );
 }
 
@@ -155,8 +160,9 @@ export const EmergencyContactForm = ({ update, index, value, setEditIndex }: {
         </Field>
       </div>
       <div className="form-row">
-        <Field label="Relation">
+        <Field label="Relation to Child" error={errors?.relation} className="w-full">
           <Input
+            {...register(`relation`, { required: 'Relation is required' })}
             type="text"
             required
           />

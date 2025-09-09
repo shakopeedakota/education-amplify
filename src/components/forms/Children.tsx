@@ -8,10 +8,12 @@ import { useState } from "react";
 import { STATES_LIST } from "@/lib/utils";
 import { Select } from "../ui/Forms/Select";
 import { Application } from "@/models/Application";
+import { ChildModal } from "../custom/ChildModal";
 
 const fieldArrayName = 'children';
 
 export const Children = ({ setForm }: { setForm: CallableFunction }) => {
+  const [ showModal, setShowModal ] = useState(false);
   const [ state, setState ] = useAppState();
   const [ editIndex, setEditIndex ] = useState(-1);
   const {
@@ -27,79 +29,87 @@ export const Children = ({ setForm }: { setForm: CallableFunction }) => {
   });
 
   const saveData = (data: any) => {
-    const nextOverride = state.nextOverride && state.nextOverride != '' ? state.nextOverride : '';
-    delete state.nextOverride;
     setState({ ...state, ...data });
-    setForm({ form: nextOverride != '' ? nextOverride : 'roi' });
+    setForm({ form: 'roi' });
   };
   
   return (
-    <Form onSubmit={handleSubmit(saveData)}>
-      <fieldset>
-        <div className="form-section">
-          <div className="form-subsection shadow">
-            <div className="form-row">
-              <div className="form-control">
-                <h2>Child(ren)</h2>
-                <p>Please add all your child(ren) that will be utilizing the Education Department and its services.</p>
-              </div>
-            </div>
-          </div>
-          {errors?.[fieldArrayName]?.root && (
-            <div className="form-row">
-              <div className="form-control">
-                <small className="error flex gap-1 mt-1 items-center"><AlertCircle size="15px" />{errors?.[fieldArrayName]?.root?.message}</small>
-              </div>
-            </div>
-          )}
-          {fields.map((field: any, index: number) => (
-            <div key={field.id} className="form-subsection shadow">
-              <div className="form-subsection-header flex gap-2">
-                <span className="mr-auto">{field.firstName ?? 'Child'} {field.lastName ?? `#${index + 1}`}</span>
-                <button type="button"  className="inline-block btn-link" onClick={() => setEditIndex(index)}>
-                  <Pencil size="16" />
-                </button>
-                <button onClick={() => remove(index)}>
-                  <Trash2 size="16" color="red" />
-                </button>
-              </div>
-              {editIndex == index && (
-                <div className="form-subsection-body">
-                  <ChildForm
-                    update={update}
-                    index={index}
-                    value={field}
-                    setEditIndex={setEditIndex}
-                  />
+    <>
+      <Form onSubmit={handleSubmit(saveData)}>
+        <fieldset>
+          <div className="form-section">
+            <div className="form-subsection shadow">
+              <div className="form-row">
+                <div className="form-control">
+                  <h2>Child(ren)</h2>
+                  <p>Please add your child(ren) that will be utilizing the Education Department and its services.</p>
                 </div>
-              )}
-            </div>
-          ))}
-          {fields?.length < 5 && (
-            <div className="form-row">
-              <div className="form-control text-center">
-                <Button
-                  type="button"
-                  onClick={() => {
-                    append({});
-                    setEditIndex(fields.length);
-                  }}
-                >
-                  <span className="flex items-center">
-                    <PlusCircle size="12px" className="mr-4" />
-                    Add Child
-                  </span>
-                </Button>
               </div>
             </div>
-          )}
-          <div className="form-row">
-            <Button type="button" onClick={() => setForm({ form: 'emergencyContacts' })} className="btn btn-thin btn-link"><span className="leftArrow"></span>Prev</Button>
-            <Button className="ml-auto btn-primary btn-thin" disabled={!isValid || fields?.length < 1}>Next<span className="rightArrow"></span></Button>
+            {errors?.[fieldArrayName]?.root && (
+              <div className="form-row">
+                <div className="form-control">
+                  <small className="error flex gap-1 mt-1 items-center"><AlertCircle size="15px" />{errors?.[fieldArrayName]?.root?.message}</small>
+                </div>
+              </div>
+            )}
+            {fields.map((field: any, index: number) => (
+              <div key={field.id} className="form-subsection shadow">
+                <div className="form-subsection-header flex gap-2">
+                  <span className="mr-auto">{field.firstName ?? 'Child'} {field.lastName ?? `#${index + 1}`}</span>
+                  <button type="button"  className="inline-block btn-link" onClick={() => setEditIndex(index)}>
+                    <Pencil size="16" />
+                  </button>
+                  <button onClick={() => remove(index)}>
+                    <Trash2 size="16" color="red" />
+                  </button>
+                </div>
+                {editIndex == index && (
+                  <div className="form-subsection-body">
+                    <ChildForm
+                      update={update}
+                      index={index}
+                      value={field}
+                      setEditIndex={setEditIndex}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+            {fields?.length < 5 && (
+              <div className="form-row">
+                <div className="form-control text-center">
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setShowModal(true);
+                    }}
+                  >
+                    <span className="flex items-center">
+                      <PlusCircle size="12px" className="mr-4" />
+                      Add Child
+                    </span>
+                  </Button>
+                </div>
+              </div>
+            )}
+            <div className="form-row">
+              <Button type="button" onClick={() => setForm({ form: 'emergencyContacts' })} className="btn btn-thin btn-link"><span className="leftArrow"></span>Prev</Button>
+              <Button className="ml-auto btn-primary btn-thin" disabled={!isValid || fields?.length < 1}>Next<span className="rightArrow"></span></Button>
+            </div>
           </div>
-        </div>
-      </fieldset>
-    </Form>
+        </fieldset>
+      </Form>
+      {showModal && (
+        <ChildModal
+          onClose={() => setShowModal(false)}
+          onSave={(contact) => {
+            append(contact);
+            setShowModal(false);
+          }}
+        />
+      )}
+    </>
   );
 }
 
@@ -145,22 +155,6 @@ export const ChildForm = ({ update, index, value, setEditIndex }: {
           />
         </Field>
       </div>
-      {/* <div className="form-row">
-        <Field label="Email" error={errors?.email} className="w-2/3">
-          <Input
-            {...register(`email`)}
-            id="email"
-            type="email"
-          />
-        </Field>
-        <Field label="Child's Phone" error={errors?.phone} className="w-1/3">
-          <Input
-            {...register(`phone`)}
-            id="phone"
-            type="tel"
-          />
-        </Field>
-      </div> */}
       <div className="form-row">
         <Field label="Current School" error={errors?.currentSchool} className="">
           <Input
