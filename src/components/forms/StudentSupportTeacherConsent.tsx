@@ -3,6 +3,8 @@ import { Form, Button, Checkbox, Field, Input, Radio } from "@/components/ui/For
 import { useForm } from "react-hook-form";
 import { AlertCircle } from "lucide-react";
 import { Application } from "@/models/Application";
+import { CheckboxList } from "../ui/Forms/CheckboxList";
+import { RadioList } from "../ui/Forms/RadioList";
 
 const fieldArrayName = 'sstConsent';
 
@@ -17,10 +19,8 @@ export const StudentSupportTeacherConsent = ({ setForm }: { setForm: CallableFun
   } = useForm<Application>({ defaultValues: state, mode: 'onSubmit' });
 
   const saveData = (data: any) => {
-    const nextOverride = state.nextOverride && state.nextOverride != '' ? state.nextOverride : '';
-    delete state.nextOverride;
     setState({ ...state, ...data });
-    setForm({ form: nextOverride != '' ? nextOverride : 'afterSchoolPickup' });
+    setForm({ form: 'afterSchoolPickup' });
   };
   
   return (
@@ -68,6 +68,7 @@ export const SSTConsentForm = ({ childId, register, errors, setValue, watch }: {
 }) => {
   const [ state ] = useAppState();
   const consent = watch(`${fieldArrayName}.${childId}.consent`);
+  const sstCommunication = watch(`${fieldArrayName}.${childId}.communicationConsent`);
   const contactFrequency = watch(`${fieldArrayName}.${childId}.contactFrequency`);
 
   return (
@@ -105,9 +106,7 @@ export const SSTConsentForm = ({ childId, register, errors, setValue, watch }: {
         )}
         {consent == 'Yes' && (
           <div className="form-row">
-            <Field
-              label="My child needs support with the following (choose one or more options)"
-            >
+            <CheckboxList label="My child needs support with the following (choose one or more options)">
               <Checkbox
                 {...register(`${fieldArrayName}.${childId}.childSupport.reading`)}
                 label="Reading"
@@ -148,12 +147,12 @@ export const SSTConsentForm = ({ childId, register, errors, setValue, watch }: {
                   />
                 }
               />
-            </Field>
+            </CheckboxList>
           </div>
         )}
         {consent == 'Yes' && (
           <div className="form-row">
-            <Field
+            <RadioList
               label="I would like my SST to call or email me..."
               error={errors?.[fieldArrayName]?.[childId].contactFrequency}
             >
@@ -213,7 +212,7 @@ export const SSTConsentForm = ({ childId, register, errors, setValue, watch }: {
                   </>
                 }
               />
-            </Field>
+            </RadioList>
           </div>
         )}
         {consent == 'Yes' && (
@@ -238,6 +237,28 @@ export const SSTConsentForm = ({ childId, register, errors, setValue, watch }: {
                 {...register(`${fieldArrayName}.${childId}.communicationConsent`, { required: 'Please select an option' })}
                 label="I do not consent to this type of communication"
                 value="I do not consent to this type of communication"
+                required
+              />
+            </Field>
+          </div>
+        )}
+        {consent == 'Yes' && 
+          sstCommunication != undefined &&
+          sstCommunication != null &&
+          sstCommunication != '' &&
+          sstCommunication != 'I do not consent to this type of communication' && (
+          <div className="form-row">
+            <Field label="Child's Email" className="w-2/3" error={errors?.children?.[childId]?.email}>
+              <Input
+                {...register(`children.${childId}.email`, { required: 'Please enter your child\'s email' })}
+                type="email"
+                required
+              />
+            </Field>
+            <Field label="Child's Phone" className="w-1/3" error={errors?.children?.[childId]?.phone}>
+              <Input
+                {...register(`children.${childId}.phone`, { required: 'Please enter your child\'s phone number' })}
+                type="tel"
                 required
               />
             </Field>

@@ -7,6 +7,7 @@ export const Radio = ({ label, error, className, value, ...props }: {
   error?: any;
   className?: string;
   value?: any;
+  required?: boolean;
 }) => {
   return (
     <label className="fancy-radio">

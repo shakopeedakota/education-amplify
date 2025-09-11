@@ -7,6 +7,7 @@ export const Checkbox = ({ label, error, className, value, ...props }: {
   error?: any;
   className?: string;
   value?: any;
+  required?: boolean;
 }) => {
   return (
     <label className="fancy-checkbox">

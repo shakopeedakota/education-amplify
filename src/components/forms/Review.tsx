@@ -70,23 +70,23 @@ export const Review = ({ setForm }: { setForm: CallableFunction }) => {
                   <tbody>
                     <tr>
                       <td><strong>Name</strong></td>
-                      <td>{state?.primaryContact?.firstName} {state?.primaryContact?.lastName}</td>
+                      <td>{state?.contactInformation?.primaryContact?.firstName} {state?.contactInformation?.primaryContact?.lastName}</td>
                     </tr>
                     <tr>
                       <td><strong>Email</strong></td>
-                      <td> {state?.primaryContact?.email}</td>
+                      <td> {state?.contactInformation?.primaryContact?.email}</td>
                     </tr>
                     <tr>
                       <td><strong>Phone</strong></td>
-                      <td>{state?.primaryContact?.phone}</td>
+                      <td>{state?.contactInformation?.primaryContact?.phone}</td>
                     </tr>
                     <tr>
                       <td><strong>Address</strong></td>
                       <td>
                         <address>
-                          {state?.primaryContact?.address}<br/>
-                          {state?.primaryContact?.address2}{state?.primaryContact?.address2 && <br/>}
-                          {state?.primaryContact?.city}, {state?.primaryContact?.state} {state?.primaryContact?.zip}
+                          {state?.contactInformation?.primaryContact?.address}<br/>
+                          {state?.contactInformation?.primaryContact?.address2}{state?.contactInformation?.primaryContact?.address2 && <br/>}
+                          {state?.contactInformation?.primaryContact?.city}, {state?.contactInformation?.primaryContact?.state} {state?.contactInformation?.primaryContact?.zip}
                         </address>
                       </td>
                     </tr>
@@ -116,23 +116,23 @@ export const Review = ({ setForm }: { setForm: CallableFunction }) => {
                   <tbody>
                     <tr>
                       <td><strong>Name</strong></td>
-                      <td>{state?.secondaryContact?.firstName} {state?.secondaryContact?.lastName}</td>
+                      <td>{state?.contactInformation?.secondaryContact?.firstName} {state?.contactInformation?.secondaryContact?.lastName}</td>
                     </tr>
                     <tr>
                       <td><strong>Email</strong></td>
-                      <td> {state?.secondaryContact?.email}</td>
+                      <td> {state?.contactInformation?.secondaryContact?.email}</td>
                     </tr>
                     <tr>
                       <td><strong>Phone</strong></td>
-                      <td>{state?.secondaryContact?.phone}</td>
+                      <td>{state?.contactInformation?.secondaryContact?.phone}</td>
                     </tr>
                     <tr>
                       <td><strong>Address</strong></td>
                       <td>
                         <address>
-                          {state?.secondaryContact?.address}<br/>
-                          {state?.secondaryContact?.address2}{state?.secondaryContact?.address2 && <br/>}
-                          {state?.secondaryContact?.city}, {state?.secondaryContact?.state} {state?.secondaryContact?.zip}
+                          {state?.contactInformation?.secondaryContact?.address}<br/>
+                          {state?.contactInformation?.secondaryContact?.address2}{state?.contactInformation?.secondaryContact?.address2 && <br/>}
+                          {state?.contactInformation?.secondaryContact?.city}, {state?.contactInformation?.secondaryContact?.state} {state?.contactInformation?.secondaryContact?.zip}
                         </address>
                       </td>
                     </tr>

@@ -1,5 +1,5 @@
 import { useAppState } from "@/lib/formState";
-import { Button, Form, Radio, Field, Textbox } from "../ui/Forms";
+import { Button, Form, Radio, Field } from "../ui/Forms";
 import { useForm } from "react-hook-form";
 import { Child } from "@/models/Child";
 import { Application } from "@/models/Application";
@@ -12,15 +12,14 @@ export const PostSecondaryServices = ({ setForm }: { setForm: CallableFunction }
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
   } = useForm<Application>({ defaultValues: state, mode: 'onSubmit' });
+  const completeSection = watch(`${fieldArrayName}.completeSection`);
 
   const saveData = (data: any) => {
-    const nextOverride = state.nextOverride && state.nextOverride != '' ? state.nextOverride : '';
-    delete state.nextOverride;
     setState({ ...state, ...data });
-    setForm({ form: nextOverride != '' ? nextOverride : 'review' });
+    setForm({ form: 'review' });
   };
   return (
     <Form onSubmit={handleSubmit(saveData)}>
@@ -30,11 +29,27 @@ export const PostSecondaryServices = ({ setForm }: { setForm: CallableFunction }
             <div className="form-control">
               <h3>Post-Secondary Services</h3>
               <p>Help us understand your needs and how to better serve this community!</p>
-              <p className="leading-none italic text-sm">This section is completely optional, however, the Education Department utilizes this information to shape the department to best fit the Community&apos;s needs.</p>
+              <p className="leading-none">This section is completely optional, however, the Education Department utilizes this information to shape the department to best fit the Community&apos;s needs.</p>
             </div>
           </div>
+          <div className="form-row">
+            <Field label="I would like to complete this section for one or more of my children" error={errors?.[fieldArrayName]?.completeSection}>
+              <Radio
+                {...register(`${fieldArrayName}.completeSection`, { required: 'This field is required' })}
+                label="Yes"
+                value="Yes"
+                required
+              />
+              <Radio
+                {...register(`${fieldArrayName}.completeSection`, { required: 'This field is required' })}
+                label="No"
+                value="No"
+                required
+              />
+            </Field>
+          </div>
         </div>
-        {state?.children?.map((child: Child, index: number) => (
+        {completeSection == 'Yes' && state?.children?.map((child: Child, index: number) => (
           <div key={index}>
             <PostSecondaryStudentForm
               childId={index}
@@ -46,7 +61,7 @@ export const PostSecondaryServices = ({ setForm }: { setForm: CallableFunction }
         ))}
         <div className="form-row">
           <Button type="button" onClick={() => setForm({ form: 'medicationAdministration' })} className="btn btn-thin btn-link"><span className="leftArrow"></span>Prev</Button>
-          <Button className="btn-primary btn-thin ml-auto">Next<span className="rightArrow"></span></Button>
+          <Button className="btn-primary btn-thin ml-auto" disabled={!isValid}>Next<span className="rightArrow"></span></Button>
         </div>
       </div>
     </Form>
@@ -114,20 +129,6 @@ export const PostSecondaryStudentForm = ({ childId, register, errors, watch }: {
             </Field>
           </div>
         )}
-        <div className="form-row">
-          <Field label="What would help you feel supported in helping your child prepare for the future?">
-            <Textbox
-              {...register(`${fieldArrayName}.${childId}.futureChildSupport`)}
-            />
-          </Field>
-        </div>
-        <div className="form-row">
-          <Field label="Anything else you would like the Education Department to know?">
-            <Textbox
-              {...register(`${fieldArrayName}.${childId}.additionalInfo`)}
-            />
-          </Field>
-        </div>
       </div>
     </div>
   );

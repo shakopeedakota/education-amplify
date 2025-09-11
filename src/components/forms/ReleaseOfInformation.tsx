@@ -11,14 +11,12 @@ export const ReleaseOfInformation = ({ setForm }: { setForm: CallableFunction })
     handleSubmit,
     register,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<Application>({ defaultValues: state, mode: 'onSubmit' });
 
   const saveData = (data: any) => {
-    const nextOverride = state.nextOverride && state.nextOverride != '' ? state.nextOverride : '';
-    delete state.nextOverride;
     setState({ ...state, ...data });
-    setForm({ form: nextOverride != '' ? nextOverride : 'sst' });
+    setForm({ form: 'sst' });
   };
 
   return (
@@ -49,7 +47,7 @@ export const ReleaseOfInformation = ({ setForm }: { setForm: CallableFunction })
           ))}
           <div className="form-row">
             <Button type="button" onClick={() => setForm({ form: 'children' })} className="btn btn-thin btn-link"><span className="leftArrow"></span>Prev</Button>
-            <Button className="ml-auto btn-primary btn-thin">Next<span className="rightArrow"></span></Button>
+            <Button className="ml-auto btn-primary btn-thin" disabled={!isValid}>Next<span className="rightArrow"></span></Button>
           </div>
         </div>
       </fieldset>

@@ -13,7 +13,7 @@ export const AfterSchoolPickup = ({ setForm }: { setForm: CallableFunction }) =>
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     control,
   } = useForm<Application>({ defaultValues: state , mode: 'onSubmit' });
 
@@ -42,10 +42,8 @@ export const AfterSchoolPickup = ({ setForm }: { setForm: CallableFunction }) =>
   });
 
   const saveData = (data: any) => {
-    const nextOverride = state.nextOverride && state.nextOverride != '' ? state.nextOverride : '';
-    delete state.nextOverride;
     setState({ ...state, ...data });
-    setForm({ form: nextOverride != '' ? nextOverride : 'medicationAdministration' });
+    setForm({ form: 'medicationAdministration' });
   };
 
   return (
@@ -65,6 +63,7 @@ export const AfterSchoolPickup = ({ setForm }: { setForm: CallableFunction }) =>
                 <Checkbox
                   {...register(`${fieldArrayName}.pickupLateNotice`, { required: 'This field is required' })}
                   label="I understand that the program closes at 5pm every day, and that my child must either be picked-up, or leave in their own car by that time. Consistently pickup up a child late will result in the need for a discussion with the Director of Education to determine appropriate next steps."
+                  required
                 />
               </Field>
             </div>
@@ -80,25 +79,36 @@ export const AfterSchoolPickup = ({ setForm }: { setForm: CallableFunction }) =>
               </div>
             </div>
             {authorizedDriversFields.map((field, index) => (
-              <div key={index} className="form-row">
-                <Field label="Name" error={errors?.[fieldArrayName]?.authorizedDrivers?.[index]?.name} className="w-2/3">
-                  <Input
-                    {...register(`${fieldArrayName}.authorizedDrivers.${index}.name`, { required: 'Name is required' })}
-                    type="text"
-                    required
-                  />
-                </Field>
-                <Field label="Phone" error={errors?.[fieldArrayName]?.authorizedDrivers?.[index]?.phone} className="w-1/3">
-                  <Input
-                    {...register(`${fieldArrayName}.authorizedDrivers.${index}.phone`, { required: 'Phone is required' })}
-                    type="tel"
-                    required
-                  />
-                </Field>
-                <div className="form-control self-end">
-                  <button type="button" onClick={() => authorizedDriversRemove(index)} title="Remove Authorized Driver"><X /></button>
+              <div key={index} className="form-section">
+                <div className="form-row">
+                  <Field label="Name" error={errors?.[fieldArrayName]?.authorizedDrivers?.[index]?.name} className="w-2/3">
+                    <Input
+                      {...register(`${fieldArrayName}.authorizedDrivers.${index}.name`, { required: 'Name is required' })}
+                      type="text"
+                      required
+                    />
+                  </Field>
+                  <Field label="Phone" error={errors?.[fieldArrayName]?.authorizedDrivers?.[index]?.phone} className="w-1/3">
+                    <Input
+                      {...register(`${fieldArrayName}.authorizedDrivers.${index}.phone`, { required: 'Phone is required' })}
+                      type="tel"
+                      required
+                    />
+                  </Field>
+                  <div className="form-control self-end">
+                    <button type="button" onClick={() => authorizedDriversRemove(index)} title="Remove Authorized Driver"><X /></button>
+                  </div>
+                  {errors?.[fieldArrayName]?.authorizedDrivers?.root?.message}
                 </div>
-                {errors?.[fieldArrayName]?.authorizedDrivers?.root?.message}
+                <div className="form-row">
+                  <Field label="Relationship to Student(s)" error={errors?.[fieldArrayName]?.authorizedDrivers?.[index]?.relationship} className="w-full">
+                    <Input
+                      {...register(`${fieldArrayName}.authorizedDrivers.${index}.relationship`, { required: 'Relationship is required' })}
+                      type="text"
+                      required
+                    />
+                  </Field>
+                </div>
               </div>
             ))}
             {authorizedDriversFields.length < 4 && (
@@ -113,34 +123,6 @@ export const AfterSchoolPickup = ({ setForm }: { setForm: CallableFunction }) =>
                 </div>
               </div>
             )}
-          </div>
-          <div className="form-subsection shadow">
-            <div className="form-row">
-              <div className="form-control">
-                <label>Please select your child(ren) who are authorized to drive their own vehicle and can leave for the day on their own.</label>
-                {state?.children?.map((child: Child, index: number) => (
-                  <Checkbox
-                    key={index}
-                    {...register(`${fieldArrayName}.studentDrivers.${index}`)}
-                    label={`${child.firstName} ${child.lastName}`}
-                    value={`${child.firstName} ${child.lastName}`}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-control">
-                <label>Please select your child(ren) who are authorized to leave with another SMSC child who drives their own vehicle. Please ensure that person is named as and Authorized Driver above.</label>
-                {state?.children?.map((child: Child, index: number) => (
-                  <Checkbox
-                    key={index}
-                    {...register(`${fieldArrayName}.leaveWithAnotherStudent.${index}`)}
-                    label={`${child.firstName} ${child.lastName}`}
-                    value={`${child.firstName} ${child.lastName}`}
-                  />
-                ))}
-              </div>
-            </div>
           </div>
           <div className="form-subsection shadow">
             <div className="form-row">
@@ -171,9 +153,55 @@ export const AfterSchoolPickup = ({ setForm }: { setForm: CallableFunction }) =>
               </div>
             )}
           </div>
+          <div className="form-subsection shadow">
+            <div className="form-row">
+              <div className="form-control">
+                <label className="font-bold">Transportation</label>
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-control">
+                <label>Please select your child(ren) who are authorized to drive their own vehicle and can leave for the day on their own.</label>
+                {state?.children?.map((child: Child, index: number) => (
+                  <Checkbox
+                    key={index}
+                    {...register(`${fieldArrayName}.studentDrivers.${index}`)}
+                    label={`${child.firstName} ${child.lastName}`}
+                    value={`${child.firstName} ${child.lastName}`}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-control">
+                <label>Please select your child(ren) who are authorized to leave with another SMSC child who drives their own vehicle. Please ensure that person is named as and Authorized Driver above.</label>
+                {state?.children?.map((child: Child, index: number) => (
+                  <Checkbox
+                    key={index}
+                    {...register(`${fieldArrayName}.leaveWithAnotherStudent.${index}`)}
+                    label={`${child.firstName} ${child.lastName}`}
+                    value={`${child.firstName} ${child.lastName}`}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-control">
+                <label>Please select your child(ren) who are authorized to take the bus from the After School Program back to their home on the reservation.</label>
+                {state?.children?.map((child: Child, index: number) => (
+                  <Checkbox
+                    key={index}
+                    {...register(`${fieldArrayName}.takeBusHome.${index}`)}
+                    label={`${child.firstName} ${child.lastName}`}
+                    value={`${child.firstName} ${child.lastName}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
           <div className="form-row">
             <Button type="button" onClick={() => setForm({ form: 'sst' })} className="btn btn-thin btn-link"><span className="leftArrow"></span>Prev</Button>
-            <Button className="ml-auto btn-primary btn-thin">Next<span className="rightArrow"></span></Button>
+            <Button className="ml-auto btn-primary btn-thin" disabled={!isValid}>Next<span className="rightArrow"></span></Button>
           </div>
         </div>
       </fieldset>
@@ -200,6 +228,15 @@ export const UnauthorizedDriversForm = ({ errors, register, remove, index }: {
         <div className="form-control self-end">
           <button type="button" onClick={() => remove(index)} title="Remove Authorized Driver"><X /></button>
         </div>
+      </div>
+      <div className="form-row">
+        <Field label="Relationship to Student(s)" error={errors?.[fieldArrayName]?.unauthorizedPickup?.[index].relationship} className="w-full">
+          <Input
+            {...register(`${fieldArrayName}.unauthorizedPickup.${index}.relationship`, { required: 'Please enter a relationship' })}
+            type="text"
+            required
+          />
+        </Field>
       </div>
       <div className="form-row">
         <Field label="Description" error={errors?.[fieldArrayName]?.unauthorizedPickup?.[index].description} className="w-full">

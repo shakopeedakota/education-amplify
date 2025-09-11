@@ -18,10 +18,8 @@ export const AuthorizationToAdministerMedication = ({ setForm }: { setForm: Call
   const consent = watch(`${fieldArrayName}.medicationAdministrationAuthorization`);
 
   const saveData = (data: any) => {
-    const nextOverride = state.nextOverride && state.nextOverride != '' ? state.nextOverride : '';
-    delete state.nextOverride;
     setState({ ...state, ...data });
-    setForm({ form: nextOverride != '' ? nextOverride : 'postSecondaryServices' });
+    setForm({ form: 'postSecondaryServices' });
   };
 
   return (
@@ -42,11 +40,13 @@ export const AuthorizationToAdministerMedication = ({ setForm }: { setForm: Call
                   {...register(`${fieldArrayName}.medicationAdministrationAuthorization`, { required: 'This field is required' })}
                   label="I authorize the administration of over-the-counter medications"
                   value="I authorize the administration of over-the-counter medications"
+                  required
                 />
                 <Radio
                   {...register(`${fieldArrayName}.medicationAdministrationAuthorization`, { required: 'This field is required' })}
                   label="I DO NOT authorize the administration of over-the-counter medications"
                   value="I DO NOT authorize the administration of over-the-counter medications"
+                  required
                 />
               </Field>
             </div>
@@ -58,6 +58,7 @@ export const AuthorizationToAdministerMedication = ({ setForm }: { setForm: Call
                       {...register(`${fieldArrayName}.prescriptionMedicationNotice`, { required: 'This field is required' })}
                       label="Yes"
                       value="Yes"
+                      required
                     />
                   </Field>
                 </div>
@@ -67,6 +68,7 @@ export const AuthorizationToAdministerMedication = ({ setForm }: { setForm: Call
                       {...register(`${fieldArrayName}.informedConsent`, { required: 'This field is required' })}
                       label="Yes"
                       value="Yes"
+                      required
                     />
                   </Field>
                 </div>

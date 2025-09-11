@@ -209,11 +209,12 @@ strong { font-weight: 500; }
 }
 .form-control:has(.form-label > input) .form-label > span,
 .form-control:has(.form-label > textarea) .form-label > span {
-  font-size: 0.85rem;
+  /* font-size: 0.85rem; */
 }
 .form-control:has(input:required) label.form-label > span:first-child::after,
 .form-control:has(textarea:required) label.form-label > span:first-child::after,
-.form-control:has(select:required) label.form-label > span:first-child::after {
+.form-control:has(select:required) label.form-label > span:first-child::after,
+.form-control:has(input[type="checkbox"]:only-of-type:required) .checkbox-label::after{
   content: '*';
   color: #f30000;
 }

@@ -10,6 +10,7 @@ export interface Application {
     authorizedDrivers: Record<any, any>[];
     studentDrivers: Record<any, any>[];
     leaveWithAnotherStudent: Record<any, any>[];
+    takeBusHome: Record<any, any>[];
   };
   medicationAdministration: {
     medicationAdministrationAuthorization: string;
@@ -17,6 +18,7 @@ export interface Application {
     informedConsent: string;
   };
   postSecondary: {
+    completeSection: string;
     [index: number]: {
       afterHighSchoolPrep: string | undefined | null;
       meetingFamilyNeeds?: string;

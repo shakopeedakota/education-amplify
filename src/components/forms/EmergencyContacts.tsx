@@ -94,7 +94,7 @@ export const EmergencyContacts = ({ setForm }: { setForm: CallableFunction }) =>
               </div>
             }
             <div className="form-row">
-              <Button type="button" onClick={() => setForm({ form: 'secondaryContact' })} className="btn btn-thin btn-link"><span className="leftArrow"></span>Prev</Button>
+              <Button type="button" onClick={() => setForm({ form: 'contactInformation' })} className="btn btn-thin btn-link"><span className="leftArrow"></span>Prev</Button>
               <Button className="ml-auto btn-primary btn-thin" disabled={!isValid || fields?.length < 1}>Next<span className="rightArrow"></span></Button>
             </div>
           </div>

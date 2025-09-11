@@ -19,8 +19,7 @@ export const ContactInformation = ({ setForm }: { setForm: CallableFunction }) =
 
   const saveData = (data: any) => {
     setState({ ...state, ...data });
-    const next = state.nextOverride && state.nextOverride != '' ? state.nextOverride : 'emergencyContacts';
-    setForm({ form: next })
+    setForm({ form: 'emergencyContacts' });
   }
 
   return (
